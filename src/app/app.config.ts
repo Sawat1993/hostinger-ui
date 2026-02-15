@@ -1,10 +1,11 @@
+import Aura from '@primeuix/themes/aura';
 
 
 import { ApplicationConfig, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { appConfigWithRoutes } from './app.config.routes';
 import { providePrimeNG } from 'primeng/config';
 import { MessageService } from 'primeng/api';
-import Aura from '@primeuix/themes/aura';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -12,7 +13,10 @@ export const appConfig: ApplicationConfig = {
     ...appConfigWithRoutes,
     providePrimeNG({
       theme: {
-        preset: Aura
+        preset: Aura,
+        options: {
+            darkModeSelector: false || 'none'
+        }
       }
     }),
     MessageService

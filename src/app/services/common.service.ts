@@ -1,11 +1,31 @@
-import { Injectable } from '@angular/core';
 
+
+
+
+import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
+
+  getUserNameFromToken(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const payload = token.split('.')[1];
+      const decoded = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+      // Try common JWT fields for name
+      return decoded.name || decoded.username || decoded.email || null;
+    } catch (e) {
+      return null;
+    }
+  }
+
+  logout(): void {
+    sessionStorage.removeItem('accessToken');
+  }
 
   isLoggedIn(): boolean {
     const token = this.getToken();

@@ -6,7 +6,8 @@ export const authGuard: CanActivateFn = (route, state) => {
   const commonService = inject(CommonService);
   const router = inject(Router);
   if (!commonService.isLoggedIn()) {
-    router.navigate(['/login']);
+    // Pass the attempted URL for redirect after login
+    router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
     return false;
   }
   return true;

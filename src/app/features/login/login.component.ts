@@ -1,16 +1,14 @@
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { ButtonModule } from 'primeng/button';
+import { InputTextModule } from 'primeng/inputtext';
 import { HttpService } from '../../services/http.service';
-import { Router } from '@angular/router';
-import { CommonService } from '../../services/common.service';
-import { HttpClientModule } from '@angular/common/http';
-import { MessageService } from 'primeng/api';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
   standalone: true,
-  imports: [ButtonModule, FormsModule, HttpClientModule],
+  imports: [ButtonModule, InputTextModule, FormsModule],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
@@ -18,11 +16,17 @@ export class LoginComponent {
   email = '';
   password = '';
 
+  returnUrl: string | null = null;
+
   constructor(
     private http: HttpService,
-    private commonService: CommonService,
     private router: Router,
-  ) {}
+    private route: ActivatedRoute,
+  ) {
+    this.route.queryParams.subscribe(params => {
+      this.returnUrl = params['returnUrl'] || null;
+    });
+  }
 
   onLogin() {
     const payload = { email: this.email, password: this.password };
@@ -33,7 +37,11 @@ export class LoginComponent {
         }
         // handle success (e.g., store token, redirect, etc.)
         console.log('Login success', res);
-        this.router.navigate(['/home']);
+        if (this.returnUrl) {
+          this.router.navigateByUrl(this.returnUrl);
+        } else {
+          this.router.navigate(['/home']);
+        }
       },
       error: (err) => {
         // handle error (e.g., show error message)

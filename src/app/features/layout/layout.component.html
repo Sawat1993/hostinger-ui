@@ -1,0 +1,17 @@
+<header class="flex align-items-center justify-content-between px-4 py-2 border-bottom-1 border-gray-300 shadow-2">
+  <div class="flex align-items-center gap-2">
+  <i class="pi pi-home text-2xl text-primary-600 cursor-pointer" title="Home" (click)="goHome()"></i>
+  <span *ngIf="isLoggedIn" class="ml-2 text-primary-800 font-medium">Hello, {{ userName || 'User' }}!</span>
+  </div>
+  <div class="flex align-items-center gap-2">
+    <ng-container *ngIf="isLoggedIn; else loginIcon">
+      <i class="pi pi-sign-out text-2xl text-primary-600 cursor-pointer" (click)="logout()" title="Logout"></i>
+    </ng-container>
+    <ng-template #loginIcon>
+      <i class="pi pi-sign-in text-2xl text-primary-600 cursor-pointer" (click)="login()" title="Login"></i>
+    </ng-template>
+  </div>
+</header>
+<main>
+  <router-outlet></router-outlet>
+</main>

@@ -1,0 +1,23 @@
+body {
+    margin: 0;
+    padding: 0;
+}
+
+// Fix PrimeNG input icon alignment globally
+.p-input-icon-left > .pi {
+	position: absolute;
+	left: 1rem;
+	top: 50%;
+	transform: translateY(-50%);
+	color: #bdbdbd;
+	pointer-events: none;
+}
+
+.p-input-icon-left {
+	position: relative;
+	display: block;
+}
+
+.p-input-icon-left .p-inputtext {
+	padding-left: 2.5rem;
+}
