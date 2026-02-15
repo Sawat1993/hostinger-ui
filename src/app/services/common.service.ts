@@ -1,17 +1,19 @@
 import { Injectable } from '@angular/core';
 
+import { environment } from '../../environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
 export class CommonService {
+
   isLoggedIn(): boolean {
     const token = this.getToken();
     return !!token && !this.isTokenExpired(token);
   }
 
   getToken(): string | null {
-    const match = document.cookie.match(new RegExp('(^| )accessToken=([^;]+)'));
-    return match ? match[2] : null;
+    return sessionStorage.getItem('accessToken');
   }
 
   isTokenExpired(token: string): boolean {
@@ -25,5 +27,9 @@ export class CommonService {
       // If token is malformed or can't be decoded, treat as expired
       return true;
     }
+  }
+
+  getApiUrl(): string {
+    return environment.apiUrl;
   }
 }
