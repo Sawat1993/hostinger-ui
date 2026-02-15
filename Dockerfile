@@ -4,7 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 
 # CACHE BUSTER: Change this number to force a new build (e.g., v=1, v=2)
-ARG CACHEBUST=1 
+ARG CACHEBUST=2
 
 RUN npm install
 COPY . .
