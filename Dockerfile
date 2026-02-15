@@ -3,9 +3,6 @@ FROM node:20-alpine as build
 WORKDIR /app
 COPY package*.json ./
 
-# CACHE BUSTER: Change this number to force a new build (e.g., v=1, v=2)
-ARG CACHEBUST=2
-
 RUN npm install
 COPY . .
 RUN npm run build:prod
