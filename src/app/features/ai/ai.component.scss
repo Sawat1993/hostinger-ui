@@ -1,0 +1,36 @@
+.chat-container {
+	height: calc(100vh - 41px);
+	padding-bottom: 8rem;
+	overflow-y: auto;
+}
+
+// Chat avatar size
+.chat-avatar {
+	width: 2.2rem;
+	height: 2.2rem;
+}
+
+
+textarea {
+	border: none;
+}
+
+textarea:focus {
+	outline: none;
+	box-shadow: none;
+	border: none;
+}
+
+// Sticky bottom bar for chat input
+.sticky-bottom-bar {
+	position: fixed;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 1000;
+}
+
+.chat-width {
+	max-width: 40rem;
+	width: 100%;
+}

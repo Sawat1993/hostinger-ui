@@ -1,17 +1,78 @@
-import { Component } from '@angular/core';
+import { Component, ChangeDetectorRef, ViewChild, ElementRef, AfterViewChecked } from '@angular/core';
+import { HttpService } from '../../services/http.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { MarkdownPipe } from './markdown.pipe';
+
+interface ChatMessage {
+  sender: 'user' | 'ai';
+  text: string;
+}
 
 @Component({
   selector: 'app-ai',
   standalone: true,
-  template: `
-    <div class="flex flex-column align-items-center justify-content-center min-h-screen">
-      <h2 class="mb-3 text-2xl text-primary-700 font-bold">AI Knowledge Assistant (RAG)</h2>
-      <p class="mb-4 text-700 text-center" style="max-width: 500px;">
-        Ask any question about my professional background, skills, or experience. This AI assistant leverages Retrieval-Augmented Generation (RAG) to provide intelligent, context-aware answers.
-      </p>
-      <!-- Add your AI chat UI or integration here -->
-      <div class="surface-100 border-round p-4 text-600">AI chat coming soon...</div>
-    </div>
-  `
+  imports: [CommonModule, FormsModule, CardModule, ButtonModule, MarkdownPipe],
+  templateUrl: './ai.component.html',
+  styleUrls: ['./ai.component.scss'],
 })
-export class AiComponent {}
+export class AiComponent implements AfterViewChecked {
+  @ViewChild('chatContainer') chatContainer!: ElementRef;
+
+  ngAfterViewChecked() {
+    this.scrollToBottom();
+  }
+
+  private scrollToBottom() {
+    if (this.chatContainer) {
+      try {
+        this.chatContainer.nativeElement.scrollTop = this.chatContainer.nativeElement.scrollHeight;
+      } catch (err) {}
+    }
+  }
+
+  private removeLastLoadingMessage() {
+    for (let i = this.messages.length - 1; i >= 0; i--) {
+      if (this.messages[i].sender === 'ai' && this.messages[i].text === '...') {
+        this.messages.splice(i, 1);
+        break;
+      }
+    }
+  }
+  userMessage = '';
+  messages: ChatMessage[] = [
+    { sender: 'ai', text: 'Hi! I am your AI assistant. How can I help you today?' },
+  ];
+
+  constructor(private http: HttpService, private cdr: ChangeDetectorRef) {}
+
+  sendMessage() {
+    const message = this.userMessage.trim();
+    if (!message) return;
+    this.messages.push({ sender: 'user', text: message });
+    this.cdr.detectChanges();
+    // Show loading message
+    this.messages.push({ sender: 'ai', text: '...' });
+    this.cdr.detectChanges();
+    this.http.get<any>('/ai/query', { q: message }).subscribe({
+      next: (response) => {
+        // Remove the last loading message from the end
+        this.removeLastLoadingMessage();
+        this.cdr.detectChanges();
+        if (response?.answer) {
+          this.messages.push({ sender: 'ai', text: response.answer });
+          this.cdr.detectChanges();
+        }
+      },
+      error: () => {
+        // Remove the last loading message from the end on error
+        this.removeLastLoadingMessage();
+        this.cdr.detectChanges();
+        // Optionally handle error
+      },
+    });
+    this.userMessage = '';
+  }
+}

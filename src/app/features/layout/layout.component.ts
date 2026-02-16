@@ -14,7 +14,6 @@ export class LayoutComponent {
     return this.commonService.getUserNameFromToken();
   }
   get isLoggedIn() {
-    console.log('Checking login status:', this.commonService.isLoggedIn());
     return this.commonService.isLoggedIn();
   }
 
