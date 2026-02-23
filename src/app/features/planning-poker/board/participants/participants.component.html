@@ -45,7 +45,7 @@
       [suggestions]="searchResults"
       (onSelect)="onParticipantSelect($event)"
       (completeMethod)="onSearch($event)"
-      field="email"
+      optionLabel="email"
       [showEmptyMessage]="true"
       emptyMessage="No users found"
       placeholder="Search users by email or name"
@@ -58,11 +58,6 @@
             <span class="font-semibold text-sm">{{ value.email }}</span>
             <span class="text-xs text-surface-600" *ngIf="value.name">{{ value.name }}</span>
           </div>
-        </div>
-      </ng-template>
-      <ng-template let-value pTemplate="selectedItem" *ngIf="selectedUser">
-        <div class="flex align-items-center gap-2">
-          <span>{{ value.email }}</span>
         </div>
       </ng-template>
     </p-autoComplete>
@@ -97,3 +92,6 @@
     ></button>
   </ng-template>
 </p-dialog>
+
+<!-- Confirm Dialog for Delete -->
+<p-confirmDialog></p-confirmDialog>

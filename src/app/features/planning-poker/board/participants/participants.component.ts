@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, ChangeDetectorRef } from '@angular/core';
+import { Component, Input, Output, EventEmitter, ChangeDetectorRef, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
 import { CardModule } from 'primeng/card';
@@ -40,10 +40,11 @@ interface User {
     AutoCompleteModule,
     ConfirmDialogModule,
   ],
+  providers: [ConfirmationService],
   templateUrl: './participants.component.html',
   styleUrls: ['./participants.component.scss'],
 })
-export class ParticipantsComponent {
+export class ParticipantsComponent implements OnInit {
   @Input() participants: Participant[] = [];
   @Input() isAdmin: boolean = false;
   @Input() boardId: string | null = null;
@@ -84,6 +85,24 @@ export class ParticipantsComponent {
         );
         this.cdr.detectChanges();
       });
+  }
+
+  ngOnInit(): void {
+    this.loadParticipants();
+  }
+
+  loadParticipants(): void {
+    if (!this.boardId) return;
+
+    this.httpService.get<Participant[]>(`/planning-poker/board/${this.boardId}/participants`).subscribe({
+      next: (participants: Participant[]) => {
+        this.participants = participants;
+        this.cdr.detectChanges();
+      },
+      error: (error) => {
+        console.error('Failed to load participants:', error);
+      }
+    });
   }
 
   openAddParticipantDialog(): void {
