@@ -1,27 +1,87 @@
 
+
 <div class="flex align-items-center justify-content-center min-h-screen bg-primary-50">
 	<div class="surface-card p-5 shadow-3 border-round w-full sm:w-30rem flex flex-column gap-4">
-		<div class="flex flex-column align-items-center gap-2 mb-4">
-			<i class="pi pi-user text-5xl text-primary-500"></i>
-			<span class="text-900 text-2xl font-bold">Welcome Back</span>
-			<span class="text-600">Sign in to your account</span>
+		<!-- LOGIN MODE -->
+		<div *ngIf="!isRegisterMode">
+			<div class="flex flex-column align-items-center gap-2 mb-4">
+				<i class="pi pi-user text-5xl text-primary-500"></i>
+				<span class="text-900 text-2xl font-bold">Welcome Back</span>
+				<span class="text-600">Sign in to your account</span>
+			</div>
+			<div class="flex flex-column gap-3 p-fluid">
+				<div class="flex flex-column gap-2">
+					<label for="email" class="text-900 font-medium">Email</label>
+					<span class="p-input-icon-left">
+						<i class="pi pi-envelope"></i>
+						<input pInputText id="email" name="email" type="email" [(ngModel)]="email" placeholder="Email address" class="w-full" />
+					</span>
+				</div>
+				<div class="flex flex-column gap-2">
+					<label for="password" class="text-900 font-medium">Password</label>
+					<span class="p-input-icon-left">
+						<i class="pi pi-lock"></i>
+						<input pInputText id="password" name="password" type="password" [(ngModel)]="password" placeholder="Password" class="w-full" />
+					</span>
+				</div>
+				<button pButton type="button" label="Login" class="w-full mt-2" (click)="onLogin()"></button>
+				<button pButton type="button" label="Create Account" class="w-full" (click)="toggleRegisterMode()" severity="info"></button>
+			</div>
 		</div>
-		<div class="flex flex-column gap-3 p-fluid">
-			<div class="flex flex-column gap-2">
-				<label for="email" class="text-900 font-medium">Email</label>
-				<span class="p-input-icon-left">
-					<i class="pi pi-envelope"></i>
-							<input pInputText id="email" name="email" type="email" [(ngModel)]="email" placeholder="Email address" class="w-full" />
-				</span>
+
+		<!-- REGISTER MODE - STEP 1: EMAIL -->
+		<div *ngIf="isRegisterMode && !otpSent">
+			<div class="flex flex-column align-items-center gap-2 mb-4">
+				<i class="pi pi-user-plus text-5xl text-success-500"></i>
+				<span class="text-900 text-2xl font-bold">Create Account</span>
+				<span class="text-600">Enter your email to get started</span>
 			</div>
-			<div class="flex flex-column gap-2">
-				<label for="password" class="text-900 font-medium">Password</label>
-				<span class="p-input-icon-left">
-					<i class="pi pi-lock"></i>
-							<input pInputText id="password" name="password" type="password" [(ngModel)]="password" placeholder="Password" class="w-full" />
-				</span>
+			<div class="flex flex-column gap-3 p-fluid">
+				<div class="flex flex-column gap-2">
+					<label for="reg-email" class="text-900 font-medium">Email</label>
+					<span class="p-input-icon-left">
+						<i class="pi pi-envelope"></i>
+						<input pInputText id="reg-email" name="reg-email" type="email" [(ngModel)]="email" placeholder="Email address" class="w-full" />
+					</span>
+				</div>
+				<button pButton type="button" label="Send OTP" class="w-full mt-2" (click)="sendOtp()"></button>
+				<button pButton type="button" label="Back to Login" class="w-full" (click)="toggleRegisterMode()" severity="secondary"></button>
 			</div>
-			<button pButton type="button" label="Login" class="w-full mt-2" (click)="onLogin()"></button>
+		</div>
+
+		<!-- REGISTER MODE - STEP 2: OTP & DETAILS -->
+		<div *ngIf="isRegisterMode && otpSent">
+			<div class="flex flex-column align-items-center gap-2 mb-4">
+				<i class="pi pi-check-circle text-5xl text-success-500"></i>
+				<span class="text-900 text-2xl font-bold">Verify & Complete</span>
+				<span class="text-600">OTP sent to {{ email }}</span>
+			</div>
+			<div class="flex flex-column gap-3 p-fluid">
+				<div class="flex flex-column gap-2">
+					<label for="otp" class="text-900 font-medium">OTP ({{ otpTimer > 0 ? formatTimer(otpTimer) : 'Expired' }})</label>
+					<span class="p-input-icon-left">
+						<i class="pi pi-lock"></i>
+						<input pInputText id="otp" name="otp" type="text" [(ngModel)]="otp" placeholder="6-digit OTP" class="w-full" />
+					</span>
+				</div>
+				<div class="flex flex-column gap-2">
+					<label for="name" class="text-900 font-medium">Name</label>
+					<span class="p-input-icon-left">
+						<i class="pi pi-user"></i>
+						<input pInputText id="name" name="name" type="text" [(ngModel)]="name" placeholder="Your name" class="w-full" />
+					</span>
+				</div>
+				<div class="flex flex-column gap-2">
+					<label for="reg-password" class="text-900 font-medium">Password</label>
+					<span class="p-input-icon-left">
+						<i class="pi pi-lock"></i>
+						<input pInputText id="reg-password" name="reg-password" type="password" [(ngModel)]="password" placeholder="Password" class="w-full" />
+					</span>
+				</div>
+				<button pButton type="button" label="Register" class="w-full mt-2" (click)="onRegister()"></button>
+				<button pButton type="button" label="Back to Login" class="w-full" (click)="toggleRegisterMode()" severity="secondary"></button>
+			</div>
 		</div>
 	</div>
 </div>
+
