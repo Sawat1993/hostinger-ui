@@ -28,28 +28,26 @@
     <h2 class="text-2xl font-bold text-surface-900 mb-4">Featured Projects</h2>
     
     <div class="grid">
-      <div class="col-12 md:col-6 lg:col-6" *ngFor="let project of projects">
-        <div class="pr-3">
-          <p-card (click)="goToProject(project.route)" class="cursor-pointer h-full transition-all hover:shadow-5">
-            <ng-template pTemplate="header">
-              <div class="surface-section border-bottom-1 surface-border p-3 flex align-items-center justify-content-between gap-2">
-                <div class="flex align-items-center gap-2">
-                  <i *ngIf="project.icon" [attr.class]="project.icon + ' text-primary text-xl'"></i>
-                  <span class="font-bold text-surface-900">{{ project.title }}</span>
-                </div>
-                <p-tag *ngIf="project.requiresLogin && !isLoggedIn" value="Auth Required" severity="info" icon="pi pi-lock" class="text-xs"></p-tag>
+      <div class="col-12 md:col-6" *ngFor="let project of projects">
+        <p-card (click)="goToProject(project.route)" class="cursor-pointer h-full transition-all hover:shadow-5">
+          <ng-template pTemplate="header">
+            <div class="surface-section border-bottom-1 surface-border p-3 flex align-items-center justify-content-between gap-2">
+              <div class="flex align-items-center gap-2">
+                <i *ngIf="project.icon" [attr.class]="project.icon + ' text-primary text-xl'"></i>
+                <span class="font-bold text-surface-900">{{ project.title }}</span>
               </div>
-            </ng-template>
-            <div class="p-3 text-surface-700 text-sm line-height-2">
-              {{ project.description }}
+              <p-tag *ngIf="project.requiresLogin && !isLoggedIn" value="Auth Required" severity="info" icon="pi pi-lock" class="text-xs"></p-tag>
             </div>
-            <ng-template pTemplate="footer">
-              <div class="p-3 border-top-1 surface-border flex justify-content-end">
-                <button pButton type="button" label="Explore" icon="pi pi-arrow-right" iconPos="right" class="p-button-xs p-button-primary" (click)="$event.stopPropagation(); goToProject(project.route)"></button>
-              </div>
-            </ng-template>
-          </p-card>
-        </div>
+          </ng-template>
+          <div class="p-3 text-surface-700 text-sm line-height-2">
+            {{ project.description }}
+          </div>
+          <ng-template pTemplate="footer">
+            <div class="p-3 border-top-1 surface-border flex justify-content-end">
+              <button pButton type="button" label="Explore" icon="pi pi-arrow-right" iconPos="right" class="p-button-xs p-button-primary" (click)="$event.stopPropagation(); goToProject(project.route)"></button>
+            </div>
+          </ng-template>
+        </p-card>
       </div>
     </div>
   </div>
