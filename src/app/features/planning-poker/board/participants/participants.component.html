@@ -1,0 +1,99 @@
+<div class="surface-0 border-round shadow-2" *ngIf="isAdmin">
+  <div class="surface-section p-3 border-bottom-1 surface-border flex justify-content-between align-items-center">
+    <h3 class="m-0 text-base font-semibold">Participants</h3>
+    <button
+      pButton
+      type="button"
+      icon="pi pi-plus"
+      class="p-button-info p-button-sm"
+      (click)="openAddParticipantDialog()"
+      pRipple
+      pTooltip="Add Participant"
+      tooltipPosition="left"
+    ></button>
+  </div>
+  <div class="p-3 flex flex-wrap gap-2">
+    <div *ngFor="let participant of participants" class="flex align-items-center gap-2 px-3 py-2 bg-surface-100 border-round">
+      <i class="pi pi-user text-sm"></i>
+      <span class="text-sm">{{ participant.name }}</span>
+      <button 
+        pButton 
+        type="button" 
+        icon="pi pi-times" 
+        class="p-button-text p-button-sm"
+        (click)="removeParticipant(participant)"
+        pRipple
+      ></button>
+    </div>
+  </div>
+</div>
+
+<!-- Add Participant Dialog -->
+<p-dialog
+  [(visible)]="showAddParticipantDialog"
+  [header]="'Add Participant'"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+  [styleClass]="'p-dialog-top'"
+>
+  <div class="flex flex-column gap-3">
+    <!-- AutoComplete Search Input -->
+    <label class="block font-semibold">Search Users</label>
+    <p-autoComplete
+      [(ngModel)]="selectedUser"
+      [suggestions]="searchResults"
+      (onSelect)="onParticipantSelect($event)"
+      (completeMethod)="onSearch($event)"
+      field="email"
+      [showEmptyMessage]="true"
+      emptyMessage="No users found"
+      placeholder="Search users by email or name"
+      [minLength]="1"
+      appendTo="body"
+    >
+      <ng-template let-value pTemplate="item">
+        <div class="flex align-items-center gap-2">
+          <div class="flex flex-column">
+            <span class="font-semibold text-sm">{{ value.email }}</span>
+            <span class="text-xs text-surface-600" *ngIf="value.name">{{ value.name }}</span>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template let-value pTemplate="selectedItem" *ngIf="selectedUser">
+        <div class="flex align-items-center gap-2">
+          <span>{{ value.email }}</span>
+        </div>
+      </ng-template>
+    </p-autoComplete>
+
+    <!-- Selected User Display -->
+    <div *ngIf="selectedUser" class="surface-100 border-1 surface-border border-round p-2">
+      <div class="flex flex-column">
+        <span class="font-semibold text-sm">{{ selectedUser.email }}</span>
+        <span class="text-xs text-surface-600" *ngIf="selectedUser.name">{{ selectedUser.name }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Dialog Footer -->
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      icon="pi pi-times"
+      (click)="showAddParticipantDialog = false"
+      class="p-button-text"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Add"
+      icon="pi pi-check"
+      (click)="addParticipant()"
+      [disabled]="!selectedUser"
+      class="p-button-success"
+    ></button>
+  </ng-template>
+</p-dialog>

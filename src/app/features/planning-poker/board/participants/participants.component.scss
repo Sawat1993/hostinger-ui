@@ -1,0 +1,17 @@
+/* Participants component styles */
+
+::ng-deep {
+  .p-dialog-top {
+    z-index: 1001 !important;
+    
+    &.p-dialog {
+      .p-dialog-content {
+        z-index: 1001 !important;
+      }
+    }
+  }
+  
+  .p-autocomplete-panel {
+    z-index: 1002 !important;
+  }
+}

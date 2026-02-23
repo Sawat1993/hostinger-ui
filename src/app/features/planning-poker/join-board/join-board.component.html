@@ -1,0 +1,37 @@
+<div class="flex flex-column align-items-center justify-content-center mt-8">
+  <div class="surface-0 border-round shadow-2 p-4" style="max-width: 500px; width: 100%;">
+    <h2 class="mb-3 text-2xl text-primary-700 font-bold text-center">Join Board</h2>
+    <div class="flex flex-column gap-3">
+      <div class="flex flex-column">
+        <label for="boardCode" class="block mb-2 font-semibold">Board Code</label>
+        <input
+          id="boardCode"
+          type="text"
+          pInputText
+          [(ngModel)]="boardCode"
+          class="w-full"
+          placeholder="Enter board code"
+          uppercase
+        />
+      </div>
+      <div class="flex gap-2 mt-2">
+        <button
+          pButton
+          type="button"
+          label="Join Board"
+          icon="pi pi-sign-in"
+          class="flex-1 p-button-info"
+          (click)="joinBoard()"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Go Back"
+          icon="pi pi-arrow-left"
+          class="flex-1 p-button-secondary"
+          (click)="goBack()"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>

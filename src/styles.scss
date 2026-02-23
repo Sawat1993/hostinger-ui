@@ -3,6 +3,31 @@ body {
     padding: 0;
 }
 
+// ==================== FIXED HEADER ====================
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    width: 100%;
+    height: 50px;
+    background-color: white;
+}
+
+main {
+    margin-top: 50px; // Header height
+    height: calc(100vh - 50px);
+    overflow: hidden;
+    overflow-y: auto;
+}
+
+// ==================== FULL HEIGHT COMPONENTS ====================
+:host {
+    display: block;
+    height: 100%;
+}
+
 // Fix PrimeNG input icon alignment globally
 .p-input-icon-left > .pi {
 	position: absolute;
@@ -20,4 +45,25 @@ body {
 
 .p-input-icon-left .p-inputtext {
 	padding-left: 2.5rem;
+}
+
+// AutoComplete 100% width styling
+p-autoComplete {
+	width: 100%;
+
+	.p-autocomplete-input {
+		width: 100% !important;
+	}
+
+	.p-autocomplete {
+		width: 100%;
+	}
+}
+
+.p-autocomplete {
+	width: 100%;
+
+	.p-autocomplete-input {
+		width: 100% !important;
+	}
 }

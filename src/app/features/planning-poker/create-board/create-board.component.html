@@ -1,0 +1,101 @@
+<div class="flex flex-column align-items-center justify-content-center mt-8">
+  <div class="surface-0 border-round shadow-2 p-4" style="max-width: 600px; width: 100%;">
+    <h2 class="mb-3 text-2xl text-primary-700 font-bold text-center">Create Board</h2>
+    <div class="flex flex-column gap-3">
+      <div class="flex flex-column">
+        <label for="boardName" class="block mb-2 font-semibold">Board Name <span class="text-red-500">*</span></label>
+        <input
+          id="boardName"
+          type="text"
+          pInputText
+          [(ngModel)]="boardName"
+          class="w-full"
+          placeholder="Enter board name"
+        />
+      </div>
+      <div class="flex flex-column">
+        <label for="description" class="block mb-2 font-semibold">Description</label>
+        <textarea
+          id="description"
+          pInputTextarea
+          [(ngModel)]="description"
+          class="w-full"
+          placeholder="Enter board description"
+          rows="3"
+        ></textarea>
+      </div>
+
+      <!-- Participants Section -->
+      <div class="flex flex-column">
+        <label for="participantSearch" class="block mb-2 font-semibold">Add Participants <span class="text-red-500">*</span></label>
+        <p-autoComplete
+          #ac
+          id="participantSearch"
+          [(ngModel)]="searchQuery"
+          [suggestions]="searchResults"
+          (onSelect)="onParticipantSelect($event)"
+          (completeMethod)="onSearch($event)"
+          field="email"
+          [showEmptyMessage]="true"
+          emptyMessage="No users found"
+          placeholder="Search users by email or name"
+          [minLength]="1"
+        >
+          <ng-template let-value pTemplate="item">
+            <div class="flex align-items-center gap-2">
+              <div class="flex flex-column">
+                <span class="font-semibold">{{ value.email }}</span>
+                <span class="text-sm text-500" *ngIf="value.name">{{ value.name }}</span>
+              </div>
+            </div>
+          </ng-template>
+        </p-autoComplete>
+      </div>
+
+      <!-- Selected Participants Display -->
+      <div class="flex flex-column gap-2" *ngIf="participants.length > 0">
+        <label class="block font-semibold">Selected Participants ({{ participants.length }})</label>
+        <div class="flex flex-wrap gap-2">
+          <div
+            *ngFor="let participant of participants"
+            class="surface-100 border-1 border-primary-300 border-round px-3 py-2 flex align-items-center gap-2"
+          >
+            <div class="flex flex-column">
+              <span class="font-semibold text-sm">{{ participant.email }}</span>
+              <span class="text-xs text-500" *ngIf="participant.name">{{ participant.name }}</span>
+            </div>
+            <button
+              pButton
+              type="button"
+              icon="pi pi-times"
+              class="p-button-text p-button-plain p-0"
+              style="height: 1.5rem; width: 1.5rem;"
+              (click)="removeParticipant(participant.email)"
+              pRipple
+            ></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-2 mt-3">
+        <button
+          pButton
+          type="button"
+          label="Create Board"
+          icon="pi pi-check"
+          class="flex-1 p-button-success"
+          [disabled]="!isFormValid()"
+          (click)="createBoard()"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Go Back"
+          icon="pi pi-arrow-left"
+          class="flex-1 p-button-secondary"
+          (click)="goBack()"
+        ></button>
+      </div>
+    </div>
+  </div>
+</div>

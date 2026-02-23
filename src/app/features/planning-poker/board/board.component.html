@@ -1,0 +1,71 @@
+<div class="flex flex-column">
+
+  <!-- Header with Action Buttons -->
+  <div class="surface-0 border-bottom-1 surface-border p-3" *ngIf="boardDetails">
+    <div class="flex justify-content-between align-items-center">
+      <div>
+        <h2 class="m-0 text-2xl font-bold">{{ boardDetails.name }}</h2>
+        <p class="m-0 mt-1 text-sm text-surface-600">{{ boardDetails.description }}</p>
+      </div>
+      
+      <!-- Action Buttons (Top Right) -->
+      <div class="flex gap-2" *ngIf="isAdmin">
+        <button
+          pButton
+          type="button"
+          label="Reveal"
+          icon="pi pi-eye"
+          class="p-button-success"
+          (click)="revealVotes()"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Complete"
+          icon="pi pi-check"
+          class="p-button-warning"
+          (click)="completeStory()"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Reset"
+          icon="pi pi-refresh"
+          class="p-button-secondary"
+          (click)="resetVotes()"
+        ></button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="flex-1 overflow-y-auto" *ngIf="boardDetails">
+    <div class="grid p-3">
+      
+      <!-- Left Panel: Stories (col-8 on desktop, col-12 on mobile) -->
+      <div class="col-12 lg:col-8 flex flex-column gap-3">
+        <!-- Stories Component -->
+        <app-stories
+          [isAdmin]="isAdmin"
+          [boardId]="boardId"
+          (storyCreated)="onStoryCreated($event)"
+        ></app-stories>
+      </div>
+
+      <!-- Right Panel: Voting and Participants (col-4 on desktop, col-12 on mobile) -->
+      <div class="col-12 lg:col-4 flex flex-column gap-3">
+        <!-- Vote Component -->
+        <app-vote
+          [currentStoryId]="currentStoryId"
+          [boardId]="boardId"
+        ></app-vote>
+
+        <!-- Participants Component -->
+        <app-participants
+          [isAdmin]="isAdmin"
+          [boardId]="boardId"
+        ></app-participants>
+      </div>
+    </div>
+  </div>
+</div>

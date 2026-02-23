@@ -1,0 +1,33 @@
+<div class="flex flex-column h-full">
+  <!-- Header -->
+  <div class="surface-0 px-4 py-3 border-bottom-1 surface-border shadow-1 flex-shrink-0">
+    <h1 class="m-0 text-2xl font-bold text-surface-900">Agile Planning Poker</h1>
+    <p class="m-0 mt-1 text-sm text-surface-600">A collaborative tool for Agile teams to estimate and reach consensus</p>
+  </div>
+
+  <!-- Content -->
+  <div class="flex-1 flex align-items-center justify-content-center" *ngIf="!isChildRouteActive">
+    <div class="text-center">
+      <div class="flex gap-3 mt-4 flex-wrap justify-content-center">
+        <button
+          pButton
+          type="button"
+          label="Create Board"
+          icon="pi pi-plus"
+          class="p-button-success"
+          (click)="navigateToCreateBoard()"
+        ></button>
+        <button
+          pButton
+          type="button"
+          label="Join Board"
+          icon="pi pi-link"
+          class="p-button-info"
+          (click)="navigateToJoinBoard()"
+        ></button>
+      </div>
+    </div>
+  </div>
+  <router-outlet></router-outlet>
+</div>
+

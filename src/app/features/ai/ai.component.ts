@@ -50,13 +50,20 @@ export class AiComponent implements AfterViewChecked {
 
   sendMessage() {
     const message = this.userMessage.trim();
-    if (!message) return;
+    if (!message) {
+      return;
+    }
+    
+    // Clear the message immediately
+    this.userMessage = '';
+    this.cdr.detectChanges();
+    
     this.messages.push({ sender: 'user', text: message });
     this.cdr.detectChanges();
     // Show loading message
     this.messages.push({ sender: 'ai', text: '...' });
     this.cdr.detectChanges();
-    this.http.get<any>('/ai/query', { q: message }).subscribe({
+    this.http.get<any>('/ai/query', { q: message }, undefined, { hideLoader: true }).subscribe({
       next: (response) => {
         // Remove the last loading message from the end
         this.removeLastLoadingMessage();
@@ -73,6 +80,5 @@ export class AiComponent implements AfterViewChecked {
         // Optionally handle error
       },
     });
-    this.userMessage = '';
   }
 }

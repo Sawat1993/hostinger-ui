@@ -1,0 +1,101 @@
+<div class="surface-0 border-round shadow-2">
+  <!-- Current Story Section -->
+  <div>
+    <div class="surface-section p-3 border-bottom-1 surface-border flex justify-content-between align-items-center">
+      <h3 class="m-0 text-base font-semibold">Current Story</h3>
+      <button
+        *ngIf="isAdmin"
+        pButton
+        type="button"
+        icon="pi pi-plus"
+        class="p-button-info p-button-sm"
+        (click)="onAddStory()"
+        pRipple
+        pTooltip="Add Story"
+        tooltipPosition="left"
+      ></button>
+    </div>
+    <div class="p-3">
+      <div *ngIf="currentStory; else noStory" class="flex flex-column gap-3">
+        <div class="p-3 bg-surface-50 border-round border-left-3 border-primary">
+          <div class="flex justify-content-between align-items-center gap-2">
+            <div class="flex-1">
+              <h4 class="m-0 font-semibold text-sm">{{ currentStory.title }}</h4>
+            </div>
+            <p-tag
+              *ngIf="currentStory.estimate"
+              [value]="currentStory.estimate.toString()"
+              severity="info"
+            ></p-tag>
+          </div>
+        </div>
+      </div>
+      <ng-template #noStory>
+        <p class="m-0 text-sm text-surface-600 py-2 px-2 bg-surface-50 border-round">
+          No story in progress
+        </p>
+      </ng-template>
+    </div>
+  </div>
+
+  <!-- Past Stories Section -->
+  <div *ngIf="pastStories.length > 0" class="border-top-1 surface-border">
+    <div class="surface-section p-3 border-bottom-1 surface-border">
+      <h3 class="m-0 text-base font-semibold">Past Stories</h3>
+    </div>
+    <div class="p-3 flex flex-column gap-2" style="max-height: 300px; overflow-y: auto;">
+      <div *ngFor="let story of pastStories" class="p-3 bg-surface-50 border-round border-left-3 border-green-500 flex justify-content-between align-items-center gap-2">
+        <div class="flex-1">
+          <p class="m-0 text-xs font-semibold text-surface-900">{{ story.title }}</p>
+        </div>
+        <p-tag
+          *ngIf="story.estimate"
+          [value]="story.estimate.toString()"
+          severity="success"
+        ></p-tag>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Add Story Dialog -->
+<p-dialog
+  [(visible)]="showAddStoryDialog"
+  [header]="'Add Story'"
+  [modal]="true"
+  [style]="{ width: '50vw' }"
+  [breakpoints]="{ '960px': '75vw', '640px': '90vw' }"
+  [styleClass]="'p-dialog-top'"
+>
+  <div class="flex flex-column gap-3">
+    <label class="block font-semibold">Story Title</label>
+    <textarea
+      pInputTextarea
+      [(ngModel)]="newStoryTitle"
+      rows="4"
+      placeholder="Enter story title..."
+      class="w-full"
+    ></textarea>
+  </div>
+
+  <!-- Dialog Footer -->
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      type="button"
+      label="Cancel"
+      icon="pi pi-times"
+      (click)="onAddStoryCancel()"
+      class="p-button-text"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Add Story"
+      icon="pi pi-check"
+      (click)="onAddStoryConfirm()"
+      [disabled]="!newStoryTitle.trim()"
+      class="p-button-success"
+    ></button>
+  </ng-template>
+</p-dialog>

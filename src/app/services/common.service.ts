@@ -23,6 +23,19 @@ export class CommonService {
     }
   }
 
+  getUserEmailFromToken(): string | null {
+    const token = this.getToken();
+    if (!token) return null;
+    try {
+      const payload = token.split('.')[1];
+      const decoded = JSON.parse(atob(payload.replace(/-/g, '+').replace(/_/g, '/')));
+      // Get email from JWT
+      return decoded.email || null;
+    } catch (e) {
+      return null;
+    }
+  }
+
   logout(): void {
     sessionStorage.removeItem('accessToken');
   }

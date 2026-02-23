@@ -1,70 +1,84 @@
-<div class="m-0 chat-container" #chatContainer>
-  <div class="flex flex-column align-items-center pb-4 pt-2">
-    <div class="chat-width">
-      <div *ngFor="let msg of messages" class="m-3">
-        <div
-          [ngClass]="
-            msg.sender === 'user'
-              ? 'flex justify-content-end align-items-end gap-2'
-              : 'flex justify-content-start align-items-end gap-2'
-          "
-        >
-          <ng-container *ngIf="msg.sender === 'ai'">
-            <span
-              class="flex align-items-center justify-content-center bg-primary-100 text-primary-700 border-circle chat-avatar w-2rem h-2rem"
-            >
-              <i class="pi pi-comment text-lg"></i>
-            </span>
-          </ng-container>
-          <div
-            [ngClass]="
-              msg.sender === 'user'
-                ? 'bg-primary-100 text-primary-900 border-round-lg px-3 py-2'
-                : 'bg-gray-200 text-gray-800 border-round-lg px-3 py-2'
-            "
-          >
-            <ng-container *ngIf="msg.sender === 'ai'; else userMsg">
-              <ng-container *ngIf="msg.text === '...'; else aiAnswer">
-                <span class="pi pi-spinner pi-spin"></span>
-              </ng-container>
-              <ng-template #aiAnswer>
-                <span [innerHTML]="msg.text | markdown"></span>
-              </ng-template>
-            </ng-container>
-            <ng-template #userMsg>{{ msg.text }}</ng-template>
+<div class="flex flex-column h-full bg-surface-0">
+  <!-- AI Chat Header -->
+  <div class="surface-0 px-4 py-3 border-bottom-1 surface-border shadow-1 flex-shrink-0">
+    <h1 class="m-0 text-2xl font-bold text-surface-900">AI Assistant</h1>
+    <p class="m-0 mt-1 text-sm text-surface-600">Ask questions and get instant answers</p>
+  </div>
+
+  <!-- Chat Container -->
+  <div class="flex-1 overflow-y-auto p-4" #chatContainer>
+    <div class="flex justify-content-center">
+      <div style="width: 100%; max-width: 700px;">
+        <!-- Welcome Message -->
+        <div class="mb-4 text-center" *ngIf="messages.length === 1">
+          <div class="surface-section border-round p-6">
+            <i class="pi pi-bolt text-5xl text-surface-400 mb-2 block"></i>
+            <h3 class="text-xl font-semibold text-surface-900 mb-2">Welcome to AI Assistant</h3>
+            <p class="m-0 text-surface-600">Get answers, brainstorm ideas, and solve problems instantly</p>
           </div>
-          <ng-container *ngIf="msg.sender === 'user'">
-            <span
-              class="flex align-items-center justify-content-center bg-primary-100 text-primary-700 border-circle chat-avatar w-2rem h-2rem"
-            >
-              <i class="pi pi-user text-lg"></i>
-            </span>
-          </ng-container>
+        </div>
+
+        <!-- Messages -->
+        <div *ngFor="let msg of messages; let last = last" class="mb-4">
+          <!-- AI Message -->
+          <div *ngIf="msg.sender === 'ai'" class="flex gap-3 align-items-center mb-3">
+            <div class="flex-shrink-0">
+              <span class="flex align-items-center justify-content-center bg-surface-200 border-circle w-2-5rem h-2-5rem">
+                <i class="pi pi-bolt text-xl text-surface-700"></i>
+              </span>
+            </div>
+            <div class="flex-1">
+              <div class="bg-surface-100 border-round p-3 text-sm">
+                <ng-container *ngIf="msg.text === '...'; else aiAnswer">
+                  <span class="pi pi-spinner pi-spin text-surface-600"></span>
+                </ng-container>
+                <ng-template #aiAnswer>
+                  <div class="text-surface-800 line-height-1-5" [innerHTML]="msg.text | markdown"></div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+
+          <!-- User Message -->
+          <div *ngIf="msg.sender === 'user'" class="flex gap-3 align-items-center justify-content-end mb-3">
+            <div class="flex-1 text-right">
+              <div class="inline-block bg-primary-500 border-round p-3 text-sm text-white">
+                <div class="line-height-1-5">{{ msg.text }}</div>
+              </div>
+            </div>
+            <div class="flex-shrink-0">
+              <span class="flex align-items-center justify-content-center w-2-5rem h-2-5rem">
+                <i class="pi pi-user text-xl text-primary-900"></i>
+              </span>
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  <div
-    class="flex justify-content-center w-full align-items-center h-8rem sticky-bottom-bar bg-gray-50"
-  >
-    <p-card [ngClass]="'chat-width m-3'">
-      <ng-template pTemplate="content">
-        <div class="flex align-items-end">
+
+  <!-- Input Area -->
+  <div class="flex-shrink-0 border-top-1 surface-border p-4 bg-surface-0">
+    <div class="flex justify-content-center w-full">
+      <div style="width: 100%; max-width: 700px;">
+        <div class="flex gap-2 align-items-end">
           <textarea
             [(ngModel)]="userMessage"
             placeholder="Type your message..."
             rows="2"
-            class="p-inputtext mr-2 flex-1 min-h-3rem w-full resize-none"
+            class="flex-1 p-inputtext border-1 surface-border text-sm"
+            style="resize: none; border: 1px solid var(--surface-border-color); border-radius: 4px; padding: 0.75rem;"
+            (keydown.enter)="$event.preventDefault(); sendMessage()"
           ></textarea>
           <button
             pButton
             type="button"
             icon="pi pi-send"
-            class="p-button-text p-button-plain text-primary"
+            class="p-button-primary p-button-rounded"
             (click)="sendMessage()"
           ></button>
         </div>
-      </ng-template>
-    </p-card>
+      </div>
+    </div>
   </div>
 </div>
