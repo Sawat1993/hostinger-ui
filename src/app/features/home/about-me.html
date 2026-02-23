@@ -1,39 +1,56 @@
-<div class="flex flex-column md:flex-row min-h-screen font-sans">
-  <aside class="flex flex-column align-items-center p-4 w-full md:w-20rem bg-white">
-    <div class="flex flex-column align-items-center gap-3 w-full">
-      <img src="/my-pic.png" alt="Sawatantra Chauhan" class="border-circle w-8rem h-8rem mx-auto">
-      <h2 class="m-0 text-center w-full">Sawatantra Chauhan</h2>
-      <p class="text-center text-600 w-full font-bold">Principal Software Engineer & Solution Architect</p>
-      <p class="text-center text-700 w-full">
-        10+ years of experience leading teams and delivering scalable, enterprise-grade web solutions. Expert in Angular, Node.js, MongoDB, and cloud-native architectures. Passionate about building high-performance products and mentoring engineering talent.
-      </p>
-      <a href="https://www.linkedin.com/in/sawatantra-chauhan-a25955111" target="_blank" class="text-primary font-medium flex align-items-center justify-content-center gap-2 w-full">
-        <i class="pi pi-linkedin text-lg"></i> LinkedIn Profile
-      </a>
-      <a href="mailto:chauhansawatantra@gmail.com" target="_blank" rel="noopener noreferrer" class="text-primary font-medium flex align-items-center justify-content-center gap-2 w-full">
-        <i class="pi pi-envelope text-lg"></i> chauhansawatantra@gmail.com
-      </a>
-    </div>
-  </aside>
-  <main class="flex-1 p-3 sm:p-4 md:p-5">
-    <h1 class="mb-4 text-2xl text-900 font-bold text-center md:text-left">My Projects</h1>
-    <div class="grid gap-4">
-      <div *ngFor="let project of projects" class="col-12 md:col-6 lg:col-4">
-        <p-card (click)="goToProject(project.route)" class="cursor-pointer project-card h-full transition-all hover:shadow-4" [style]="{minHeight: '100%'}">
-          <ng-template pTemplate="header">
-            <div class="flex align-items-center gap-2 p-4">
-              <i *ngIf="project.icon" [ngClass]="project.icon + ' text-2xl text-primary'" aria-hidden="true"></i>
-              <span class="font-bold text-xl">{{ project.title }}</span>
-            </div>
-          </ng-template>
-          <div class="text-700" style="min-height: 60px;">{{ project.description }}</div>
-          <ng-template pTemplate="footer">
-            <div class="flex justify-content-end">
-              <button pButton type="button" icon="pi pi-arrow-right" class="p-button-text p-button-plain text-primary" (click)="$event.stopPropagation(); goToProject(project.route)"></button>
-            </div>
-          </ng-template>
-        </p-card>
+<div class="bg-surface-0">
+  <!-- Header Section -->
+  <div class="surface-0 border-bottom-1 surface-border shadow-1">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+      <div class="flex flex-column md:flex-row gap-4 align-items-center justify-content-center md:align-items-center md:justify-content-start">
+        <div class="md:flex-shrink-0 text-center md:text-left">
+          <img src="/my-pic.png" alt="Sawatantra Chauhan" class="border-circle shadow-2 mx-auto md:mx-0" style="width: 100px; height: 100px;">
+        </div>
+        <div class="flex-1 text-center md:text-left">
+          <h1 class="text-3xl font-bold m-0 text-surface-900">Sawatantra Chauhan</h1>
+          <p class="text-lg text-primary font-semibold mt-2 mb-2">Principal Software Engineer & Solution Architect</p>
+          <p class="text-base text-surface-700 m-0 mb-3 line-height-2">10+ years of experience architecting and leading high-performing engineering teams. Specialized in building scalable, enterprise-grade solutions using Angular, Node.js, MongoDB, and cloud-native technologies. Proven track record of delivering mission-critical systems and mentoring talent.</p>
+          <div class="flex gap-3 justify-content-center md:justify-content-start">
+            <a href="https://www.linkedin.com/in/sawatantra-chauhan-a25955111" target="_blank" class="text-primary hover:text-primary-600 font-medium">
+              <i class="pi pi-linkedin"></i> LinkedIn
+            </a>
+            <a href="mailto:chauhansawatantra@gmail.com" target="_blank" rel="noopener noreferrer" class="text-primary hover:text-primary-600 font-medium">
+              <i class="pi pi-envelope"></i> Email
+            </a>
+          </div>
+        </div>
       </div>
     </div>
-  </main>
+  </div>
+
+  <!-- Projects Section -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+    <h2 class="text-2xl font-bold text-surface-900 mb-4">Featured Projects</h2>
+    
+    <div class="grid">
+      <div class="col-12 md:col-6 lg:col-6" *ngFor="let project of projects">
+        <div class="pr-3">
+          <p-card (click)="goToProject(project.route)" class="cursor-pointer h-full transition-all hover:shadow-5">
+            <ng-template pTemplate="header">
+              <div class="surface-section border-bottom-1 surface-border p-3 flex align-items-center justify-content-between gap-2">
+                <div class="flex align-items-center gap-2">
+                  <i *ngIf="project.icon" [attr.class]="project.icon + ' text-primary text-xl'"></i>
+                  <span class="font-bold text-surface-900">{{ project.title }}</span>
+                </div>
+                <p-tag *ngIf="project.requiresLogin && !isLoggedIn" value="Auth Required" severity="info" icon="pi pi-lock" class="text-xs"></p-tag>
+              </div>
+            </ng-template>
+            <div class="p-3 text-surface-700 text-sm line-height-2">
+              {{ project.description }}
+            </div>
+            <ng-template pTemplate="footer">
+              <div class="p-3 border-top-1 surface-border flex justify-content-end">
+                <button pButton type="button" label="Explore" icon="pi pi-arrow-right" iconPos="right" class="p-button-xs p-button-primary" (click)="$event.stopPropagation(); goToProject(project.route)"></button>
+              </div>
+            </ng-template>
+          </p-card>
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
