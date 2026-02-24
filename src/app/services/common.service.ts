@@ -10,8 +10,8 @@ import { Router } from '@angular/router';
 })
 export class CommonService {
   private tokenExpiryCheckTimer: ReturnType<typeof setInterval> | null = null;
-  private readonly TOKEN_EXPIRY_CHECK_INTERVAL = 5 * 60 * 1000;
-  private readonly TOKEN_RENEWAL_THRESHOLD = 10 * 60 * 1000;
+  private readonly TOKEN_EXPIRY_CHECK_INTERVAL = 2 * 60 * 1000;
+  private readonly TOKEN_RENEWAL_THRESHOLD = 4 * 60 * 1000;
 
   constructor(
     private httpService: HttpService,
@@ -109,6 +109,7 @@ export class CommonService {
   }
 
   private checkAndRenewToken(): void {
+    console.log('Checking token expiry', new Date());
     if (!this.isLoggedIn()) {
       return; // Not logged in, skip check
     }
