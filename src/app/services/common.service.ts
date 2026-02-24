@@ -88,6 +88,13 @@ export class CommonService {
   private initializeTokenRenewal(): void {
     this.ngZone.runOutsideAngular(() => {
       this.startTokenExpiryCheckTimer();
+      // Listen for tab visibility changes
+      document.addEventListener('visibilitychange', () => {
+        if (!document.hidden) {
+          // Tab became active, restart the timer);
+          this.startTokenExpiryCheckTimer();
+        }
+      });
     });
   }
 
