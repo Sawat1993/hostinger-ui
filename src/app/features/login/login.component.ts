@@ -115,7 +115,6 @@ export class LoginComponent {
         if (res && res.accessToken) {
           sessionStorage.setItem('accessToken', res.accessToken);
         }
-        console.log('Login success', res);
         if (this.returnUrl) {
           this.router.navigateByUrl(this.returnUrl);
         } else {
